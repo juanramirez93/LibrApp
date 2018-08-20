@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">LibrApp</string>
+    <string name="greetingText">Bienvenido a Librapp, tu gestor de biblioteca</string>
+    <string name="myLibraryButton">Mi biblioteca</string>
+</resources>
