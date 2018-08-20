@@ -1,5 +1,9 @@
 package com.librapp.librapp.models;
 
+import com.librapp.librapp.app.MyApplication;
+
+import java.util.Date;
+
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
@@ -12,18 +16,22 @@ public class Book extends RealmObject {
     private RealmList<Author> authors;
     private Editorial editorial;
     private int year;
+    private String language;
     private RealmList<Theme> themes;
     private RealmList<Keyword> keywords;
     private Person owner;
-    private Person holder;
+    private RealmList<Record> records;
+    private RealmList<Loan> loans;
+    private Date createdAt;
 
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
+    public Book() {
+        this.id = MyApplication.BookID.incrementAndGet();
+        this.authors = new RealmList<>();
+        this.themes = new RealmList<>();
+        this.keywords = new RealmList<>();
+        this.records = new RealmList<>();
+        this.loans = new RealmList<>();
+        this.createdAt = new Date();
     }
 
     public String getTitle() {
@@ -82,11 +90,31 @@ public class Book extends RealmObject {
         this.owner = owner;
     }
 
-    public Person getHolder() {
-        return holder;
+    public RealmList<Record> getRecords() {
+        return records;
     }
 
-    public void setHolder(Person holder) {
-        this.holder = holder;
+    public void setRecords(RealmList<Record> records) {
+        this.records = records;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+    public RealmList<Loan> getLoans() {
+        return loans;
+    }
+
+    public void setLoans(RealmList<Loan> loans) {
+        this.loans = loans;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
     }
 }
