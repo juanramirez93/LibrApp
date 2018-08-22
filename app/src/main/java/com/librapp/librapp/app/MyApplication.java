@@ -14,6 +14,7 @@ import com.librapp.librapp.models.Theme;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import io.realm.Realm;
+import io.realm.RealmConfiguration;
 import io.realm.RealmObject;
 import io.realm.RealmResults;
 
@@ -30,7 +31,7 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Realm.init(this);
+        Realm.init(getApplicationContext());
         Realm realm = Realm.getDefaultInstance();
         BookID = getIdByTable(realm, Book.class);
         AuthorID = getIdByTable(realm, Author.class);
@@ -40,6 +41,7 @@ public class MyApplication extends Application {
         RecordID = getIdByTable(realm, Record.class);
         ThemeID = getIdByTable(realm, Theme.class);
         LoanID = getIdByTable(realm, Loan.class);
+        realm.close();
     }
 
     private <T extends RealmObject> AtomicInteger getIdByTable(Realm realm, Class<T> anyClass) {
