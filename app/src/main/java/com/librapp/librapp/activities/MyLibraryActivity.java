@@ -8,6 +8,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -20,12 +21,13 @@ import io.realm.Realm;
 import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
 
-public class MyLibraryActivity extends AppCompatActivity implements View.OnClickListener, RealmChangeListener {
+public class MyLibraryActivity extends AppCompatActivity implements View.OnClickListener, RealmChangeListener, AdapterView.OnItemLongClickListener {
 
     private FloatingActionButton fabAddBook;
     private Realm realm;
     private BookAdapter adapter;
     private RealmResults<Book> books;
+    private ListView listView;
 
 
     @Override
@@ -42,14 +44,14 @@ public class MyLibraryActivity extends AppCompatActivity implements View.OnClick
         realm = Realm.getDefaultInstance();
         books = realm.where(Book.class).findAll();
         books.addChangeListener(this);
-        ListView listView = findViewById(R.id.listViewMyLibrary);
+        listView = findViewById(R.id.listViewMyLibrary);
         adapter = new BookAdapter(this, books, R.layout.list_view_book_item);
         listView.setAdapter(adapter);
-
+        listView.setOnItemLongClickListener(this);
         realm = Realm.getDefaultInstance();
     }
 
-    private void showAlertForCreatingBook(String title, String message) {
+    private void showDialogForCreatingBook(String title, String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         if (title != null) builder.setTitle(title);
         if (message != null) builder.setMessage(message);
@@ -64,9 +66,9 @@ public class MyLibraryActivity extends AppCompatActivity implements View.OnClick
             public void onClick(DialogInterface dialog, int which) {
                 String title = nameField.getText().toString().trim();
                 if (title.length() > 0) {
-                    createNewBook(title);
+                    createBook(title);
                 } else {
-                    Toast.makeText(getApplicationContext(), "Agregue un nombre", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Agregue un título", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -74,7 +76,13 @@ public class MyLibraryActivity extends AppCompatActivity implements View.OnClick
         builder.create().show();
     }
 
-    private void createNewBook(String title) {
+    private void deleteBook(Book book){
+        realm.beginTransaction();
+        book.deleteFromRealm();
+        realm.commitTransaction();
+    }
+
+    private void createBook(String title) {
         realm.beginTransaction();
         Book book = new Book();
         book.setTitle(title);
@@ -85,7 +93,7 @@ public class MyLibraryActivity extends AppCompatActivity implements View.OnClick
     @Override
     public void onClick(View v) {
         if (v.equals(fabAddBook)) {
-            showAlertForCreatingBook("Agregar Libro", "Llena los datos");
+            showDialogForCreatingBook("Agregar Libro", "Llena los datos");
         }
     }
 
@@ -94,5 +102,43 @@ public class MyLibraryActivity extends AppCompatActivity implements View.OnClick
         if (o.equals(books)) {
             adapter.notifyDataSetChanged();
         }
+    }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+        switch (parent.getId()){
+            case R.id.listViewMyLibrary:
+                Book book = (Book)parent.getItemAtPosition(position);
+                showDialogForDeletingBook(book.getTitle(), book);
+                return true;
+
+        }
+        return false;
+    }
+
+    private void showDialogForDeletingBook(String title, final Book book) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        if (title != null) builder.setTitle(title);
+
+        View viewInflated = LayoutInflater.from(this).inflate(R.layout.dialog_delete_book, null);
+        builder.setView(viewInflated);
+
+
+        builder.setPositiveButton("Eliminar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                deleteBook(book);
+            }
+        });
+
+        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        builder.create().show();
     }
 }
