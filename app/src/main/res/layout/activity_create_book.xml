@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.TextInputLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="15dp"
+    tools:context=".activities.CreateBookActivity">
+
+    <EditText
+        android:id="@+id/AddBookTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/bookTitle"
+        android:inputType="textCapCharacters" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Autor" />
+
+            <Spinner
+                android:id="@+id/spinnerAuthor"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/buttonAddAuthor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/addAuthor" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/addBookSave"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/save" />
+
+</android.support.design.widget.TextInputLayout>

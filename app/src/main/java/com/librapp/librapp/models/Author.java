@@ -13,7 +13,7 @@ public class Author extends RealmObject {
     private long id;
     private String name;
     private int age;
-    @LinkingObjects("authors")
+    @LinkingObjects("author")
     private final RealmResults<Book> books = null;
 
     public Author(){

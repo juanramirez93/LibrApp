@@ -5,4 +5,8 @@
     <string name="myLibraryText">Mi Biblioteca</string>
     <string name="bookTitle">Título</string>
     <string name="deleteBook">¿Desea eliminar el libro?</string>
+    <string name="addAuthor">Nuevo</string>
+    <string name="authorName">Nombre</string>
+    <string name="authorAge">Edad</string>
+    <string name="save">Guardar</string>
 </resources>

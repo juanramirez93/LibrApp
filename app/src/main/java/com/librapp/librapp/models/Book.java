@@ -13,7 +13,7 @@ public class Book extends RealmObject {
     @PrimaryKey
     private long id;
     private String title;
-    private RealmList<Author> authors;
+    private Author author;
     private Editorial editorial;
     private int year;
     private String language;
@@ -26,7 +26,6 @@ public class Book extends RealmObject {
 
     public Book() {
         this.id = MyApplication.BookID.incrementAndGet();
-        this.authors = new RealmList<>();
         this.themes = new RealmList<>();
         this.keywords = new RealmList<>();
         this.records = new RealmList<>();
@@ -40,14 +39,6 @@ public class Book extends RealmObject {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public RealmList<Author> getAuthors() {
-        return authors;
-    }
-
-    public void setAuthors(RealmList<Author> authors) {
-        this.authors = authors;
     }
 
     public Editorial getEditorial() {
@@ -116,5 +107,13 @@ public class Book extends RealmObject {
 
     public Date getCreatedAt() {
         return createdAt;
+    }
+
+    public Author getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(Author author) {
+        this.author = author;
     }
 }

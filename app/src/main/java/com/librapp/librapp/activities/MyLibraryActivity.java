@@ -1,6 +1,7 @@
 package com.librapp.librapp.activities;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -11,10 +12,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.librapp.librapp.R;
-import com.librapp.librapp.adapters.BookAdapter;
+import com.librapp.librapp.adapters.AuthorAdapterSpinner;
+import com.librapp.librapp.adapters.BookAdapterListView;
+import com.librapp.librapp.models.Author;
 import com.librapp.librapp.models.Book;
 
 import io.realm.Realm;
@@ -25,7 +29,7 @@ public class MyLibraryActivity extends AppCompatActivity implements View.OnClick
 
     private FloatingActionButton fabAddBook;
     private Realm realm;
-    private BookAdapter adapter;
+    private BookAdapterListView adapter;
     private RealmResults<Book> books;
     private ListView listView;
 
@@ -45,35 +49,9 @@ public class MyLibraryActivity extends AppCompatActivity implements View.OnClick
         books = realm.where(Book.class).findAll();
         books.addChangeListener(this);
         listView = findViewById(R.id.listViewMyLibrary);
-        adapter = new BookAdapter(this, books, R.layout.list_view_book_item);
+        adapter = new BookAdapterListView(this, books, R.layout.list_view_book_item);
         listView.setAdapter(adapter);
         listView.setOnItemLongClickListener(this);
-        realm = Realm.getDefaultInstance();
-    }
-
-    private void showDialogForCreatingBook(String title, String message) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        if (title != null) builder.setTitle(title);
-        if (message != null) builder.setMessage(message);
-
-        View viewInflated = LayoutInflater.from(this).inflate(R.layout.dialog_create_book, null);
-        builder.setView(viewInflated);
-
-        final EditText nameField = viewInflated.findViewById(R.id.AddBookTitle);
-
-        builder.setPositiveButton("Añadir", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String title = nameField.getText().toString().trim();
-                if (title.length() > 0) {
-                    createBook(title);
-                } else {
-                    Toast.makeText(getApplicationContext(), "Agregue un título", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-
-        builder.create().show();
     }
 
     private void deleteBook(Book book){
@@ -82,18 +60,11 @@ public class MyLibraryActivity extends AppCompatActivity implements View.OnClick
         realm.commitTransaction();
     }
 
-    private void createBook(String title) {
-        realm.beginTransaction();
-        Book book = new Book();
-        book.setTitle(title);
-        realm.copyToRealm(book);
-        realm.commitTransaction();
-    }
-
     @Override
     public void onClick(View v) {
         if (v.equals(fabAddBook)) {
-            showDialogForCreatingBook("Agregar Libro", "Llena los datos");
+            Intent intent = new Intent(MyLibraryActivity.this, CreateBookActivity.class);
+            startActivity(intent);
         }
     }
 

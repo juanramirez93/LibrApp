@@ -7,8 +7,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:gravity="center_vertical"
         android:padding="10dp"
         >
@@ -19,6 +19,13 @@
             android:layout_height="wrap_content"
             android:textSize="18dp"
             android:textStyle="bold"
+            />
+        <TextView
+            android:id="@+id/textViewBookAuthor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="12dp"
+            android:paddingLeft="150dp"
             />
 
     </LinearLayout>

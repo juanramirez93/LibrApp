@@ -32,6 +32,10 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         Realm.init(getApplicationContext());
+        RealmConfiguration config = new RealmConfiguration.Builder()
+                .deleteRealmIfMigrationNeeded()
+                .build();
+        Realm.setDefaultConfiguration(config);
         Realm realm = Realm.getDefaultInstance();
         BookID = getIdByTable(realm, Book.class);
         AuthorID = getIdByTable(realm, Author.class);
