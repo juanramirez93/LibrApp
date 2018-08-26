@@ -7,31 +7,28 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.librapp.librapp.R;
-import com.librapp.librapp.adapters.AuthorAdapterSpinner;
-import com.librapp.librapp.adapters.BookAdapterListView;
-import com.librapp.librapp.models.Author;
+import com.librapp.librapp.adapters.BookAdapterRecyclerView;
 import com.librapp.librapp.models.Book;
 
 import io.realm.Realm;
 import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
 
-public class MyLibraryActivity extends AppCompatActivity implements View.OnClickListener, RealmChangeListener, AdapterView.OnItemLongClickListener {
+public class MyLibraryActivity extends AppCompatActivity implements View.OnClickListener, RealmChangeListener {
 
     private FloatingActionButton fabAddBook;
     private Realm realm;
-    private BookAdapterListView adapter;
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter rVAdapter;
+    private RecyclerView.LayoutManager layoutManager;
     private RealmResults<Book> books;
-    private ListView listView;
 
 
     @Override
@@ -48,13 +45,24 @@ public class MyLibraryActivity extends AppCompatActivity implements View.OnClick
         realm = Realm.getDefaultInstance();
         books = realm.where(Book.class).findAll();
         books.addChangeListener(this);
-        listView = findViewById(R.id.listViewMyLibrary);
-        adapter = new BookAdapterListView(this, books, R.layout.list_view_book_item);
-        listView.setAdapter(adapter);
-        listView.setOnItemLongClickListener(this);
+        recyclerView = findViewById(R.id.rVMyLibrary);
+        layoutManager = new LinearLayoutManager(this);
+        rVAdapter = new BookAdapterRecyclerView(books, R.layout.recycler_view_book_item, new BookAdapterRecyclerView.OnItemClickListener() {
+            @Override
+            public void onItemClick(Book book, int position) {
+                Toast.makeText(MyLibraryActivity.this, book.getTitle(), Toast.LENGTH_LONG).show();
+            }
+        }, new BookAdapterRecyclerView.OnItemLongClickListener() {
+            @Override
+            public void onItemLongClick(Book book, int position) {
+                showDialogForDeletingBook(book);
+            }
+        });
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(rVAdapter);
     }
 
-    private void deleteBook(Book book){
+    private void deleteBook(Book book) {
         realm.beginTransaction();
         book.deleteFromRealm();
         realm.commitTransaction();
@@ -71,26 +79,13 @@ public class MyLibraryActivity extends AppCompatActivity implements View.OnClick
     @Override
     public void onChange(@NonNull Object o) {
         if (o.equals(books)) {
-            adapter.notifyDataSetChanged();
+            rVAdapter.notifyDataSetChanged();
         }
     }
 
-    @Override
-    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-
-        switch (parent.getId()){
-            case R.id.listViewMyLibrary:
-                Book book = (Book)parent.getItemAtPosition(position);
-                showDialogForDeletingBook(book.getTitle(), book);
-                return true;
-
-        }
-        return false;
-    }
-
-    private void showDialogForDeletingBook(String title, final Book book) {
+    private void showDialogForDeletingBook(final Book book) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        if (title != null) builder.setTitle(title);
+        if (book.getTitle() != null) builder.setTitle(book.getTitle());
 
         View viewInflated = LayoutInflater.from(this).inflate(R.layout.dialog_delete_book, null);
         builder.setView(viewInflated);

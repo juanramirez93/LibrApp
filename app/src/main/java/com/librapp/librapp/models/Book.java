@@ -23,6 +23,7 @@ public class Book extends RealmObject {
     private RealmList<Record> records;
     private RealmList<Loan> loans;
     private Date createdAt;
+    private String imagePath;
 
     public Book() {
         this.id = MyApplication.BookID.incrementAndGet();
