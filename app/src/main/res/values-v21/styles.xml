@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="LibrappTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/redApp</item>
+        <item name="colorPrimaryDark">@color/md_brown_700</item>
+        <item name="colorAccent">@color/redApp</item>
+        <item name="android:colorForeground">@color/md_white_1000</item>
+        <item name="colorButtonNormal">@color/redApp</item>
+        <item name="colorBackgroundFloating">@color/md_grey_50</item>
+        <item name="android:textColorPrimary">@color/md_grey_800</item>
+        <item name="android:textColorSecondary">@color/md_grey_500</item>
+        <item name="android:textColorPrimaryInverse">@color/md_white_1000</item>
+        <item name="android:textColorSecondaryInverse">@color/md_black_1000</item>
+    </style>
+</resources>

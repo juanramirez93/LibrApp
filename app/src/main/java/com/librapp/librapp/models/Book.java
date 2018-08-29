@@ -117,4 +117,17 @@ public class Book extends RealmObject {
     public void setAuthor(Author author) {
         this.author = author;
     }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
+    @Override
+    public String toString() {
+        return title + "//" + author + "//" + imagePath;
+    }
 }

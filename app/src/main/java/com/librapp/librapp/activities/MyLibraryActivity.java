@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -46,11 +47,11 @@ public class MyLibraryActivity extends AppCompatActivity implements View.OnClick
         books = realm.where(Book.class).findAll();
         books.addChangeListener(this);
         recyclerView = findViewById(R.id.rVMyLibrary);
-        layoutManager = new LinearLayoutManager(this);
+        layoutManager = new GridLayoutManager(this, 2);
         rVAdapter = new BookAdapterRecyclerView(books, R.layout.recycler_view_book_item, new BookAdapterRecyclerView.OnItemClickListener() {
             @Override
             public void onItemClick(Book book, int position) {
-                Toast.makeText(MyLibraryActivity.this, book.getTitle(), Toast.LENGTH_LONG).show();
+                Toast.makeText(MyLibraryActivity.this, book.toString(), Toast.LENGTH_LONG).show();
             }
         }, new BookAdapterRecyclerView.OnItemLongClickListener() {
             @Override

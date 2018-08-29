@@ -12,7 +12,6 @@ public class Author extends RealmObject {
     @PrimaryKey
     private long id;
     private String name;
-    private int age;
     @LinkingObjects("author")
     private final RealmResults<Book> books = null;
 
@@ -28,13 +27,6 @@ public class Author extends RealmObject {
         this.name = name;
     }
 
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
 
     public RealmResults<Book> getBooks() {
         return books;

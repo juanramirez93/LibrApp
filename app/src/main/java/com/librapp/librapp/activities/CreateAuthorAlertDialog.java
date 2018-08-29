@@ -22,7 +22,6 @@ public class CreateAuthorAlertDialog extends AlertDialog.Builder {
     private Realm realm;
     private View viewInflated;
     private EditText nameField;
-    private EditText ageField;
 
     public CreateAuthorAlertDialog(Context context) {
         super(context);
@@ -36,7 +35,6 @@ public class CreateAuthorAlertDialog extends AlertDialog.Builder {
         viewInflated = LayoutInflater.from(context).inflate(R.layout.dialog_create_author, null);
         this.setView(viewInflated);
         nameField = viewInflated.findViewById(R.id.AddAuthorName);
-        ageField = viewInflated.findViewById(R.id.AddAuthorAge);
         this.setTitle("Crear Autor");
     }
 
@@ -54,15 +52,11 @@ public class CreateAuthorAlertDialog extends AlertDialog.Builder {
 
     private void createAuthor() {
         String name = nameField.getText().toString().trim();
-        String age = ageField.getText().toString().trim();
 
         if (name.length() > 0) {
 
             Author author = new Author();
             author.setName(name);
-            if(age.length() > 0){
-                author.setAge(Integer.valueOf(age));
-            }
             realm.beginTransaction();
             realm.copyToRealm(author);
             realm.commitTransaction();
