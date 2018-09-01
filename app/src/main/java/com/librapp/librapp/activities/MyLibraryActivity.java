@@ -8,11 +8,9 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Toast;
 
 import com.librapp.librapp.R;
 import com.librapp.librapp.adapters.BookAdapterRecyclerView;
@@ -51,7 +49,12 @@ public class MyLibraryActivity extends AppCompatActivity implements View.OnClick
         rVAdapter = new BookAdapterRecyclerView(books, R.layout.recycler_view_book_item, new BookAdapterRecyclerView.OnItemClickListener() {
             @Override
             public void onItemClick(Book book, int position) {
-                Toast.makeText(MyLibraryActivity.this, book.toString(), Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(MyLibraryActivity.this, CreateBookActivity.class);
+                intent.putExtra("title",book.getTitle());
+               //t intent.putExtra("autor",book.getAuthor().getName());
+                startActivity(intent);
+
+                //Toast.makeText(MyLibraryActivity.this, book.getTitle().toString(), Toast.LENGTH_LONG).show();
             }
         }, new BookAdapterRecyclerView.OnItemLongClickListener() {
             @Override
@@ -61,6 +64,7 @@ public class MyLibraryActivity extends AppCompatActivity implements View.OnClick
         });
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(rVAdapter);
+
     }
 
     private void deleteBook(Book book) {
@@ -73,6 +77,7 @@ public class MyLibraryActivity extends AppCompatActivity implements View.OnClick
     public void onClick(View v) {
         if (v.equals(fabAddBook)) {
             Intent intent = new Intent(MyLibraryActivity.this, CreateBookActivity.class);
+            intent.putExtra("title","");
             startActivity(intent);
         }
     }

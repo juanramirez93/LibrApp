@@ -26,7 +26,7 @@ import com.librapp.librapp.R;
 import com.librapp.librapp.adapters.AuthorAdapterSpinner;
 import com.librapp.librapp.models.Author;
 import com.librapp.librapp.models.Book;
-import com.squareup.picasso.Picasso;
+import com.librapp.librapp.util.Puente;
 
 import gun0912.tedbottompicker.TedBottomPicker;
 import io.realm.Realm;
@@ -50,13 +50,30 @@ public class CreateBookActivity extends AppCompatActivity implements View.OnClic
     private String path;
     private Uri selectedUri;
     public RequestManager mGlideRequestManager;
+    public Puente pte;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_book);
         setTheme(R.style.LibrappTheme);
+        Intent intent = getIntent();
+        String nombre = intent.getStringExtra("title");
+        Toast.makeText(this, nombre,Toast.LENGTH_SHORT).show();
         initializeVariables();
+       if(!nombre.equals("")){
+            this.setTitle("Editar Libro");
+            this.setValoredEdit(intent);
+        }else{
+            this.setTitle("Crear Libro");
+        }
+
+    }
+
+    public void setValoredEdit(Intent intent){
+        String nombre = intent.getStringExtra("title");
+        this.titleField.setText(nombre.toString());
+        this.field
     }
 
 
@@ -72,7 +89,6 @@ public class CreateBookActivity extends AppCompatActivity implements View.OnClic
         authorField = findViewById(R.id.spinnerAuthor);
         AuthorAdapterSpinner authorAdapterSpinner = new AuthorAdapterSpinner(this, authors, R.layout.spinner_author_item);
         authorField.setAdapter(authorAdapterSpinner);
-        this.setTitle("Crear Libro");
         addAuthor = findViewById(R.id.buttonAddAuthor);
         addAuthor.setOnClickListener(this);
         addBook = findViewById(R.id.addBookSave);
@@ -177,6 +193,10 @@ public class CreateBookActivity extends AppCompatActivity implements View.OnClic
         } else {
             showExplanation();
         }
+    }
+
+    public Book puente(Intent intent){
+        return (Book)intent.getSerializableExtra("libros");
     }
 
     private void showExplanation() {
