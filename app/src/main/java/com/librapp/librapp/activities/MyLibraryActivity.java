@@ -51,6 +51,7 @@ public class MyLibraryActivity extends AppCompatActivity implements View.OnClick
             public void onItemClick(Book book, int position) {
                 Intent intent = new Intent(MyLibraryActivity.this, CreateBookActivity.class);
                 intent.putExtra("title",book.getTitle());
+                intent.putExtra("autor",book.getAuthor().getName());
                //t intent.putExtra("autor",book.getAuthor().getName());
                 startActivity(intent);
 

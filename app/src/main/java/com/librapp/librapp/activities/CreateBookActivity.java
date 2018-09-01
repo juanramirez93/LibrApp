@@ -73,7 +73,7 @@ public class CreateBookActivity extends AppCompatActivity implements View.OnClic
     public void setValoredEdit(Intent intent){
         String nombre = intent.getStringExtra("title");
         this.titleField.setText(nombre.toString());
-        this.field
+        //this.authorField.setTe
     }
 
 
