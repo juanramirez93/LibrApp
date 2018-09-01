@@ -13,7 +13,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -60,7 +59,7 @@ public class CreateBookActivity extends AppCompatActivity implements View.OnClic
         setTheme(R.style.LibrappTheme);
         Intent intent = getIntent();
         String nombre = intent.getStringExtra("title");
-        //Toast.makeText(this, nombre,Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, nombre,Toast.LENGTH_SHORT).show();
         initializeVariables();
        if(!nombre.equals("")){
             this.setTitle("Editar Libro");
@@ -73,41 +72,9 @@ public class CreateBookActivity extends AppCompatActivity implements View.OnClic
 
     public void setValoredEdit(Intent intent){
         String nombre = intent.getStringExtra("title");
-        String autor = intent.getStringExtra("autor");
-        Toast.makeText(this, autor,Toast.LENGTH_SHORT).show();
-        int pos;
         this.titleField.setText(nombre.toString());
-        pos = getIndex(authorField, autor);
-        this.authorField.setSelection(pos);
+        //this.authorField.setTe
     }
-
-    private int getIndex(Spinner spinner, String myString){
-        String valor = "";
-        int valor1 = 0, valor2 = 0;
-        for (int i=0;i<spinner.getCount();i++){
-            valor=spinner.getItemAtPosition(i).toString();
-            valor1 =  valor.indexOf("name:") + 5;
-            valor2 =  valor.indexOf("}]");
-            valor=valor.substring(valor1, valor2 );
-            if (valor.equals(myString)){
-                return i;
-            }
-        }
-        return 0;
-    }
-
-    private void agregarAutor(Intent intent){
-        String compareValue = intent.getStringExtra("autor");
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.yellows, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        authorField.setAdapter(adapter);
-        if (compareValue != null) {
-            int spinnerPosition = adapter.getPosition(compareValue);
-            authorField.setSelection(spinnerPosition);
-        }
-    }
-
-
 
 
     private void initializeVariables() {
@@ -119,7 +86,6 @@ public class CreateBookActivity extends AppCompatActivity implements View.OnClic
         imageView.setOnClickListener(this);
         mGlideRequestManager.load(R.mipmap.ic_book_default).into(imageView);
         titleField = findViewById(R.id.AddBookTitle);
-
         authorField = findViewById(R.id.spinnerAuthor);
         AuthorAdapterSpinner authorAdapterSpinner = new AuthorAdapterSpinner(this, authors, R.layout.spinner_author_item);
         authorField.setAdapter(authorAdapterSpinner);

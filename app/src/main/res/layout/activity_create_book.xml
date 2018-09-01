@@ -42,7 +42,6 @@
 
         <TextView
             style="@style/TextAppearance.AppCompat.Body1"
-            android:id="@+id/ShowAutorName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Autor" />
